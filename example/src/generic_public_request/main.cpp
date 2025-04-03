@@ -21,26 +21,26 @@ int main(int argc, char** argv) {
   MyEventHandler eventHandler;
   Session session(sessionOptions, sessionConfigs, &eventHandler);
   {
-    Request request(Request::Operation::GENERIC_PUBLIC_REQUEST, "binance", "", "Check Server Time");
+    Request request(Request::Operation::GENERIC_PUBLIC_REQUEST, "binance", "", "Market Data");
     request.appendParam({
         {"HTTP_METHOD", "GET"},
-        {"HTTP_PATH", "/api/v3/time"},
+        {"HTTP_PATH", "/api/v3/exchangeInfo"},
     });
     session.sendRequest(request);
   }
-  std::this_thread::sleep_for(std::chrono::seconds(10));
+  std::this_thread::sleep_for(std::chrono::seconds(2));
   {
     // This endpoint requires X-MBX-APIKEY header: https://binance-docs.github.io/apidocs/spot/en/#old-trade-lookup
     // Therefore please set environment variable BINANCE_API_KEY.
-    Request request(Request::Operation::GENERIC_PUBLIC_REQUEST, "binance", "", "Old Trade Lookup");
+    Request request(Request::Operation::GENERIC_PUBLIC_REQUEST, "binance", "", "ETH/BTC Orderbook");
     request.appendParam({
         {"HTTP_METHOD", "GET"},
-        {"HTTP_PATH", "/api/v3/historicalTrades"},
-        {"HTTP_QUERY_STRING", "symbol=BTCUSDT"},
+        {"HTTP_PATH", "/api/v3/depth"},
+        {"HTTP_QUERY_STRING", "symbol=ETHBTC&limit=20"},
     });
     session.sendRequest(request);
   }
-  std::this_thread::sleep_for(std::chrono::seconds(10));
+  std::this_thread::sleep_for(std::chrono::seconds(2));
   session.stop();
   std::cout << "Bye" << std::endl;
   return EXIT_SUCCESS;

@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 set(NAME example)
 project(${NAME})
 set(CMAKE_CXX_STANDARD 17)
+
+add_compile_definitions(CCAPI_ENABLE_EXCHANGE_BINANCE)
+
 if(NOT APPLE AND NOT MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
